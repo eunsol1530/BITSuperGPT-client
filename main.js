@@ -465,7 +465,7 @@ async function injectJSCode(win, jscode_name, replacement = []) {
 
         // 替换模板中的内容
         replacement.forEach((replace) => {
-            const regex = new RegExp(replace.template, "g");
+            const regex = new RegExp(replace.template.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
             data = data.replace(regex, replace.value);
         });
 
@@ -699,7 +699,7 @@ function createWindow() {
             preload: path.join(__dirname, "preload.js"),
             nodeIntegration: false,
             contextIsolation: true,
-            webSecurity: false,
+            // webSecurity: false, // Removed this line to enable web security
         },
     });
     win.webContents.session.setProxy({
